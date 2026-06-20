@@ -37,3 +37,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Database file (jangan di-commit, isinya data lokal/sensitif)
+*.db
+*.sqlite
+*.sqlite3
