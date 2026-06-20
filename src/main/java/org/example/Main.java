@@ -9,9 +9,25 @@ public class Main {
         SarungDAO sarungDAO = new SarungDAO();
         sarungDAO.createTable();
 
-        List<Sarung> daftarSarung = sarungDAO.getAll();
+        System.out.println("=== Sebelum Update ===");
+        tampilkanSemua(sarungDAO);
 
-        System.out.println("=== Daftar Sarung ===");
+        // Update data SRG001: harga jual & stok berubah
+        Sarung sarungUpdate = new Sarung("SRG001", "Sarung Songket Palembang", "Sutra", 85000, 130000, 10);
+        sarungDAO.update(sarungUpdate);
+
+        System.out.println("\n=== Setelah Update ===");
+        tampilkanSemua(sarungDAO);
+
+        // Hapus data SRG001
+        sarungDAO.delete("SRG001");
+
+        System.out.println("\n=== Setelah Delete ===");
+        tampilkanSemua(sarungDAO);
+    }
+
+    private static void tampilkanSemua(SarungDAO sarungDAO) {
+        List<Sarung> daftarSarung = sarungDAO.getAll();
         for (Sarung sarung : daftarSarung) {
             System.out.println(sarung.getKode() + " | " + sarung.getNama() + " | " +
                     sarung.getJenisBahan() + " | Rp" + sarung.getHargaJual() + " | Stok: " + sarung.getStok());

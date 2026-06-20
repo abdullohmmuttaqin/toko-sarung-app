@@ -82,4 +82,52 @@ public class SarungDAO {
 
         return daftarSarung;
     }
+
+    // Mengubah data sarung yang sudah ada, berdasarkan kode
+    public void update(Sarung sarung) {
+        String sql = "UPDATE sarung SET nama = ?, jenis_bahan = ?, harga_beli = ?, harga_jual = ?, stok = ? " +
+                "WHERE kode = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, sarung.getNama());
+            pstmt.setString(2, sarung.getJenisBahan());
+            pstmt.setDouble(3, sarung.getHargaBeli());
+            pstmt.setDouble(4, sarung.getHargaJual());
+            pstmt.setInt(5, sarung.getStok());
+            pstmt.setString(6, sarung.getKode());
+
+            int baris = pstmt.executeUpdate();
+            if (baris > 0) {
+                System.out.println("Data sarung berhasil diupdate.");
+            } else {
+                System.out.println("Data dengan kode " + sarung.getKode() + " tidak ditemukan.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Gagal update data: " + e.getMessage());
+        }
+    }
+
+    // Menghapus data sarung berdasarkan kode
+    public void delete(String kode) {
+        String sql = "DELETE FROM sarung WHERE kode = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, kode);
+
+            int baris = pstmt.executeUpdate();
+            if (baris > 0) {
+                System.out.println("Data sarung berhasil dihapus.");
+            } else {
+                System.out.println("Data dengan kode " + kode + " tidak ditemukan.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Gagal menghapus data: " + e.getMessage());
+        }
+    }
 }
