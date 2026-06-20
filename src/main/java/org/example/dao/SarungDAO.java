@@ -4,6 +4,11 @@ import org.example.db.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.example.model.Sarung;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.ArrayList;
 
 public class SarungDAO {
 
@@ -25,5 +30,56 @@ public class SarungDAO {
         } catch (SQLException e) {
             System.out.println("Gagal membuat tabel: " + e.getMessage());
         }
+    }
+
+    // Menambahkan satu data sarung baru ke database
+    public void insert(Sarung sarung) {
+        String sql = "INSERT INTO sarung (kode, nama, jenis_bahan, harga_beli, harga_jual, stok) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, sarung.getKode());
+            pstmt.setString(2, sarung.getNama());
+            pstmt.setString(3, sarung.getJenisBahan());
+            pstmt.setDouble(4, sarung.getHargaBeli());
+            pstmt.setDouble(5, sarung.getHargaJual());
+            pstmt.setInt(6, sarung.getStok());
+
+            pstmt.executeUpdate();
+            System.out.println("Data sarung berhasil ditambahkan.");
+
+        } catch (SQLException e) {
+            System.out.println("Gagal menambahkan data: " + e.getMessage());
+        }
+    }
+
+    // Mengambil semua data sarung dari database
+    public List<Sarung> getAll() {
+        List<Sarung> daftarSarung = new ArrayList<>();
+        String sql = "SELECT * FROM sarung";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Sarung sarung = new Sarung(
+                        rs.getString("kode"),
+                        rs.getString("nama"),
+                        rs.getString("jenis_bahan"),
+                        rs.getDouble("harga_beli"),
+                        rs.getDouble("harga_jual"),
+                        rs.getInt("stok")
+                );
+                daftarSarung.add(sarung);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Gagal mengambil data: " + e.getMessage());
+        }
+
+        return daftarSarung;
     }
 }
