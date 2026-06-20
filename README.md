@@ -50,4 +50,4 @@ src/main/java/org/example/
 
 ## 👤 Author
 
-Dibuat oleh **AbdMMuttaqin** — project pembelajaran sekaligus solusi nyata untuk toko sarung keluarga.
+Dibuat oleh **Avanti.Dev** — project pembelajaran sekaligus solusi nyata untuk toko sarung keluarga.
