@@ -20,10 +20,10 @@ Project ini dibuat untuk membantu operasional toko sarung milik keluarga, sekali
 - [x] Setup project & koneksi database
 - [x] Model data `Sarung`
 - [x] Pembuatan tabel database
-- [ ] Tambah data sarung
-- [ ] Lihat daftar sarung
-- [ ] Edit data sarung
-- [ ] Hapus data sarung
+- [x] Tambah data sarung
+- [x] Lihat daftar sarung
+- [x] Edit data sarung
+- [x] Hapus data sarung
 
 ### Rencana Selanjutnya
 - [ ] Milestone 2 — Transaksi penjualan
