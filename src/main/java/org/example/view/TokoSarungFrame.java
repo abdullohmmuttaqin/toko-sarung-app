@@ -87,6 +87,75 @@ public class TokoSarungFrame extends JFrame {
                 bersihkanForm();
             }
         });
+
+        // Klik baris tabel → isi form otomatis
+        table.getSelectionModel().addListSelectionListener(e -> {
+            int baris = table.getSelectedRow();
+            if (baris != -1) {
+                txtKode.setText(tableModel.getValueAt(baris, 0).toString());
+                txtNama.setText(tableModel.getValueAt(baris, 1).toString());
+                txtJenisBahan.setText(tableModel.getValueAt(baris, 2).toString());
+                txtHargaBeli.setText(tableModel.getValueAt(baris, 3).toString());
+                txtHargaJual.setText(tableModel.getValueAt(baris, 4).toString());
+                txtStok.setText(tableModel.getValueAt(baris, 5).toString());
+            }
+        });
+
+        // Tombol Update
+        btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String kode = txtKode.getText().trim();
+                String nama = txtNama.getText().trim();
+                String jenisBahan = txtJenisBahan.getText().trim();
+                String hargaBeliStr = txtHargaBeli.getText().trim();
+                String hargaJualStr = txtHargaJual.getText().trim();
+                String stokStr = txtStok.getText().trim();
+
+                if (kode.isEmpty() || nama.isEmpty() || hargaBeliStr.isEmpty()
+                        || hargaJualStr.isEmpty() || stokStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Pilih data dari tabel dulu!");
+                    return;
+                }
+
+                try {
+                    double hargaBeli = Double.parseDouble(hargaBeliStr);
+                    double hargaJual = Double.parseDouble(hargaJualStr);
+                    int stok = Integer.parseInt(stokStr);
+
+                    Sarung sarung = new Sarung(kode, nama, jenisBahan, hargaBeli, hargaJual, stok);
+                    sarungDAO.update(sarung);
+                    muatData();
+                    bersihkanForm();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Harga dan stok harus berupa angka!");
+                }
+            }
+        });
+
+        // Tombol Hapus
+        btnHapus.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String kode = txtKode.getText().trim();
+
+                if (kode.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Pilih data dari tabel dulu!");
+                    return;
+                }
+
+                int konfirmasi = JOptionPane.showConfirmDialog(null,
+                        "Yakin mau hapus data kode: " + kode + "?",
+                        "Konfirmasi Hapus",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (konfirmasi == JOptionPane.YES_OPTION) {
+                    sarungDAO.delete(kode);
+                    muatData();
+                    bersihkanForm();
+                }
+            }
+        });
     }
 
     // Bikin panel form input (label + kotak teks)
